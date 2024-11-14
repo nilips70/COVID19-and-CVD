@@ -295,6 +295,14 @@ df_final <- covid_effects_summary_df %>% left_join(country_code_converter)
 countries_probs = as.data.frame(sort(round(apply(covid_effects, 2, function(x){mean(x >= europe_effect_covid$mu_covid)}),2))) %>% 
   rename(probs = `sort(round(apply(covid_effects, 2, function(x) {     mean(x >= europe_effect_covid$mu_covid) }), 2))`) %>% t()
 
+# transposing the data (changing rows into columns) and extracting the identifiers 
+country_prob = as.data.frame(t(countries_probs)) %>% 
+  mutate(var_name = rownames(.),
+         country_id = extract_first_number(var_name)) %>% 
+  select(-var_name)
+
+# remove the row names 
+rownames(country_prob) <- NULL
 
 df_final1 <- left_join(df_final, country_prob, by = "country_id") %>% 
   mutate(probs = probs * 100)  %>% 
@@ -302,7 +310,7 @@ df_final1 <- left_join(df_final, country_prob, by = "country_id") %>%
   rename(name = country_name) %>% 
   mutate(Odds = round(`50%` * 100, 2))
 
-df_final$name[12] <- "Czechia"
+df_final1$name[12] <- "Czechia"
 
 # to check if all the countries we have match the countries in the shapefile
 df_merge <- left_join(df_final1, SHP_28, by = "name")
