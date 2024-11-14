@@ -253,9 +253,10 @@ fig1 = europe_summary_df %>%
   geom_point(color = '#A9CCE3', size = 1.5) +
   scale_y_discrete(expand = expansion(mult = 0.0000000000001)) +
   theme_bw() + 
-  theme(axis.text.y = element_text(face = "bold", size = 13), 
-        axis.text.x = element_text(face = "bold", size = 13),
-        axis.title.x = element_text(face = "bold", size = 13)) + # Adjust this size as needed
+  theme(axis.text.y = element_text(face = "bold", size = 14), 
+        axis.text.x = element_text(face = "bold", size = 14, margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        axis.title.x = element_text(face = "bold", size = 16, margin = margin(t = 10, r = 0, b = 0, l = 0))
+       ) + # Adjust this size as needed
   labs(x = "Change in odds of CVD (%)", y = NULL)
 
 ggsave("effect.png", plot = fig1, dpi = 600, width = 8, height = 6, units = "in")
