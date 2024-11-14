@@ -196,7 +196,6 @@ model_data <- list(
 
 
 # Run the model
-set.seed(123)
 model_run <- jags(
   data = model_data,
   parameters.to.save = model_parameters,
@@ -244,7 +243,7 @@ europe_summary_df <- as.data.frame(t(europe_summary)) %>%
   mutate(var = c("Covid", "Diabetes",  "Chronic lung disease", "Hypertension", "BMI")) #
 
 # plotting (Figure 1 in paper)
-europe_summary_df %>% 
+fig1 = europe_summary_df %>% 
   mutate(across(`2.5%`:`97.5%`, ~. * 100)) %>% 
   ggplot(aes(x = `50%`, y = reorder(var, `50%`))) +
   geom_pointrange(aes(xmin = `2.5%`, xmax = `97.5%`), position = position_dodge(width = 0.75), size = 0.5, fatten = 1.25, color = "#85C1E9") + 
@@ -258,6 +257,9 @@ europe_summary_df %>%
         axis.text.x = element_text(face = "bold", size = 13),
         axis.title.x = element_text(face = "bold", size = 13)) + # Adjust this size as needed
   labs(x = "Change in odds of CVD (%)", y = NULL)
+
+ggsave("effect.png", plot = fig1, dpi = 600, width = 8, height = 6, units = "in")
+
 
 # to plot the Fig. 2 from the paper
 # extracting beta_covid
