@@ -316,7 +316,7 @@ df_final1$name[12] <- "Czechia"
 df_merge <- left_join(df_final1, SHP_28, by = "name")
 
 
-df_merge %>% 
+fig2 = df_merge %>% 
   st_as_sf() %>% 
   ggplot(aes(fill = probs)) +
   geom_sf(lwd = 0.5) +
@@ -329,8 +329,9 @@ df_merge %>%
         panel.background = element_rect(fill = "grey90", colour="blue"),
         legend.text = element_text(color = "black", size = 10),
         legend.title = element_text(face = "bold"),
-        axis.text.x = element_text(size = 12, margin = margin(t = 6)),
-        axis.text.y = element_text(size = 12, margin = margin(t = 6))) +
+        axis.text.x = element_text(size = 13, margin = margin(t = 6)),
+        axis.text.y = element_text(size = 13, margin = margin(t = 6))) +
   labs(fill = "Probability (%)")
 
 
+ggsave("map.png", plot = fig2, width = 10, height = 8, dpi = 600)
